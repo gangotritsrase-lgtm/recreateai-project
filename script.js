@@ -26,7 +26,10 @@ analyzeBtn.addEventListener("click", async () => {
   const reader = new FileReader();
 
   reader.onloadend = async () => {
-    const base64 = reader.result.split(",")[1];    const response = await fetch("/api/analyze", {
+  try {
+    const base64 = reader.result.split(",")[1];
+
+    const response = await fetch("/api/analyze", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +47,10 @@ analyzeBtn.addEventListener("click", async () => {
     } else {
       result.innerHTML = data.error || "Something went wrong.";
     }
-  };
+  } catch (err) {
+    result.innerHTML = "Error: " + err.message;
+  }
+};
 
-  reader.readAsDataURL(file);
+reader.readAsDataURL(file);
 });
