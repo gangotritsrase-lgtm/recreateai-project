@@ -13,7 +13,7 @@ imageInput.addEventListener("change", () => {
   }
 });
 
-analyzeBtn.addEventListener("click", () => {
+analyzeBtn.addEventListener("click", async () => {
   const file = imageInput.files[0];
 
   if (!file) {
@@ -21,6 +21,30 @@ analyzeBtn.addEventListener("click", () => {
     return;
   }
 
-  result.innerHTML =
-    "<h3>Selected Image</h3><p>AI integration will be added in the next step.</p>";
+  result.innerHTML = "Analyzing image...";
+
+  const reader = new FileReader();
+
+  reader.onloadend = async () => {
+    const base64 = reader.result.split(",")[1];    const response = await fetch("/api/analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        image: base64,
+        mimeType: file.type,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.result) {
+      result.innerHTML = `<pre>${data.result}</pre>`;
+    } else {
+      result.innerHTML = data.error || "Something went wrong.";
+    }
+  };
+
+  reader.readAsDataURL(file);
 });
