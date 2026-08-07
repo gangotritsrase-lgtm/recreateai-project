@@ -1,48 +1,26 @@
-body{
-    margin:0;
-    padding:0;
-    font-family:Arial,sans-serif;
-    background:#f4f7fc;
-}
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+const result = document.getElementById("result");
+const analyzeBtn = document.getElementById("analyzeBtn");
 
-.container{
-    max-width:500px;
-    margin:60px auto;
-    background:#fff;
-    padding:25px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,0.15);
-}
+imageInput.addEventListener("change", () => {
+  const file = imageInput.files[0];
 
-h1{
-    color:#2563eb;
-}
+  if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+    result.innerHTML = "";
+  }
+});
 
-p{
-    color:#555;
-}
+analyzeBtn.addEventListener("click", () => {
+  const file = imageInput.files[0];
 
-input{
-    margin-top:20px;
-}
+  if (!file) {
+    result.innerHTML = "Please select an image first.";
+    return;
+  }
 
-button{
-    margin-top:20px;
-    padding:12px 24px;
-    background:#2563eb;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-button:hover{
-    background:#1d4ed8;
-}
-
-#result{
-    margin-top:20px;
-    font-weight:bold;
-}
+  result.innerHTML =
+    "<h3>Selected Image</h3><p>AI integration will be added in the next step.</p>";
+});
